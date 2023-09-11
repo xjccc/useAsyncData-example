@@ -1,0 +1,2 @@
+# useAsyncData-example
+test useAsyncData
