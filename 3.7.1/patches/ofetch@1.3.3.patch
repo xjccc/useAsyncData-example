@@ -1,0 +1,152 @@
+diff --git a/dist/shared/ofetch.00501375.mjs b/dist/shared/ofetch.00501375.mjs
+index 636c840d2fd9ca0843cc035e968d30eba7834ac2..5deced8b46b3450004f49ccb8023d4f2ae53d633 100644
+--- a/dist/shared/ofetch.00501375.mjs
++++ b/dist/shared/ofetch.00501375.mjs
+@@ -21,26 +21,41 @@ function createFetchError(ctx) {
+     message,
+     ctx.error ? { cause: ctx.error } : void 0
+   );
+-  for (const key of ["request", "options", "response"]) {
+-    Object.defineProperty(fetchError, key, {
+-      get() {
+-        return ctx[key];
+-      }
+-    });
+-  }
+-  for (const [key, refKey] of [
+-    ["data", "_data"],
+-    ["status", "status"],
+-    ["statusCode", "status"],
+-    ["statusText", "statusText"],
+-    ["statusMessage", "statusText"]
+-  ]) {
+-    Object.defineProperty(fetchError, key, {
+-      get() {
+-        return ctx.response && ctx.response[refKey];
+-      }
+-    });
+-  }
++  Object.defineProperty(fetchError, "request", {
++    get() {
++      return request;
++    },
++  });
++  Object.defineProperty(fetchError, "response", {
++    get() {
++      return response;
++    },
++  });
++  Object.defineProperty(fetchError, "data", {
++    get() {
++      return response && response._data;
++    },
++  });
++  Object.defineProperty(fetchError, "status", {
++    get() {
++      return response && response.status;
++    },
++  });
++  Object.defineProperty(fetchError, "statusText", {
++    get() {
++      return response && response.statusText;
++    },
++  });
++  Object.defineProperty(fetchError, "statusCode", {
++    get() {
++      return response && response.status;
++    },
++  });
++  Object.defineProperty(fetchError, "statusMessage", {
++    get() {
++      return response && response.statusText;
++    },
++  });
+   return fetchError;
+ }
+ 
+@@ -108,9 +123,6 @@ function mergeFetchOptions(input, defaults, Headers = globalThis.Headers) {
+   }
+   if (defaults?.headers && input?.headers) {
+     merged.headers = new Headers(defaults?.headers || {});
+-    for (const [key, value] of new Headers(input?.headers || {})) {
+-      merged.headers.set(key, value);
+-    }
+   }
+   return merged;
+ }
+diff --git a/dist/shared/ofetch.92c14be7.cjs b/dist/shared/ofetch.92c14be7.cjs
+index b3b7610ec3f2d8483e19a6fcfa1b332bbaeb103c..f1aea54eb616f24690bf7bb8ef0f24221e475f21 100644
+--- a/dist/shared/ofetch.92c14be7.cjs
++++ b/dist/shared/ofetch.92c14be7.cjs
+@@ -27,26 +27,41 @@ function createFetchError(ctx) {
+     message,
+     ctx.error ? { cause: ctx.error } : void 0
+   );
+-  for (const key of ["request", "options", "response"]) {
+-    Object.defineProperty(fetchError, key, {
+-      get() {
+-        return ctx[key];
+-      }
+-    });
+-  }
+-  for (const [key, refKey] of [
+-    ["data", "_data"],
+-    ["status", "status"],
+-    ["statusCode", "status"],
+-    ["statusText", "statusText"],
+-    ["statusMessage", "statusText"]
+-  ]) {
+-    Object.defineProperty(fetchError, key, {
+-      get() {
+-        return ctx.response && ctx.response[refKey];
+-      }
+-    });
+-  }
++  Object.defineProperty(fetchError, "request", {
++    get() {
++      return request;
++    },
++  });
++  Object.defineProperty(fetchError, "response", {
++    get() {
++      return response;
++    },
++  });
++  Object.defineProperty(fetchError, "data", {
++    get() {
++      return response && response._data;
++    },
++  });
++  Object.defineProperty(fetchError, "status", {
++    get() {
++      return response && response.status;
++    },
++  });
++  Object.defineProperty(fetchError, "statusText", {
++    get() {
++      return response && response.statusText;
++    },
++  });
++  Object.defineProperty(fetchError, "statusCode", {
++    get() {
++      return response && response.status;
++    },
++  });
++  Object.defineProperty(fetchError, "statusMessage", {
++    get() {
++      return response && response.statusText;
++    },
++  });
+   return fetchError;
+ }
+ 
+@@ -114,9 +129,6 @@ function mergeFetchOptions(input, defaults, Headers = globalThis.Headers) {
+   }
+   if (defaults?.headers && input?.headers) {
+     merged.headers = new Headers(defaults?.headers || {});
+-    for (const [key, value] of new Headers(input?.headers || {})) {
+-      merged.headers.set(key, value);
+-    }
+   }
+   return merged;
+ }
